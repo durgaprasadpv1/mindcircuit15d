@@ -1,0 +1,30 @@
+
+pipeline {
+    agent any
+
+    stages {
+        stage('clone git repo') {
+            steps {
+                echo 'cloning code from git repository'
+				
+				git branch: 'main', url: 'https://github.com/durgaprasadpv1/mindcircuit15d.git'
+            }
+        }
+		
+		stage('build artifact') {
+            steps {
+                echo 'building artifact using maven build tool'
+				sh 'mvn clean install'
+            }
+        }
+		
+		stage('deploy to tomcat') {
+            steps {
+                echo 'deploying atrifact on to tomcat'
+				deploy adapters: [tomcat9(credentialsId: 'pvdurgaprasad', path: '', url: 'http://ec2-18-206-213-207.compute-1.amazonaws.com:8080/')], contextPath: 'prasadxyz', war: '**/*.war'
+            }
+        }
+		
+		
+    }
+}
