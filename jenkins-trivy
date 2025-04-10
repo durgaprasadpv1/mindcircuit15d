@@ -36,7 +36,7 @@ pipeline {
             }
         }
 		
-         stage('image scan using trivt') {
+         stage('image scan using trivy') {
             steps {
                sh "trivy image --format json --output results.json devopshubg333/mc14:v1"
                                      
